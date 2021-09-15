@@ -22,7 +22,7 @@ struct Home: View{
     //Number of moves we can make
     @State var moves: [String] = Array(repeating: "", count: 9)
     //To identify current player
-    @State var isPlaying = false
+    @State var isPlaying = true
     var body: some View{
         VStack{
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 15), count: 3), spacing:15){
@@ -32,16 +32,22 @@ struct Home: View{
                     ZStack{
                     Color.white
                         
+                    Color.gray
+                        .opacity(moves[index] == "" ? 1:0)
                         Text(moves[index])
                             .fontWeight(.heavy)
                             .foregroundColor(.black)
                     }
                         .frame(width: getWidth(), height: getWidth())
                         .cornerRadius(60)
+                    
+                    
                     .onTapGesture(perform: {
                         withAnimation(Animation.easeIn(duration: 0.5)) {
+                            if moves[index] == "" {
                             moves[index] = isPlaying ? "X" : "O"
                             isPlaying.toggle()
+                            }
                         }
                     })
                     }
