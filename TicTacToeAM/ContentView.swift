@@ -26,9 +26,17 @@ struct Home: View{
                 ForEach(0..<9, id: \.self) {
                     index in
                     Color.white
+                        .frame(width: getWidth(), height: getWidth())
+                        .cornerRadius(60)
                 }
             }
+            .padding(15)
         }
+    }
+    //calc width of grid
+    func getWidth() -> CGFloat {
+        let width = UIScreen.main.bounds.width - (30 + 30 )
+        return width / 3
     }
 }
 
