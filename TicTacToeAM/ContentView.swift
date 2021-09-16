@@ -27,7 +27,6 @@ struct Home: View{
     @State var msg = ""
     var body: some View{
         VStack{
-            Text(msg)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 15), count: 3), spacing:15){
                 
                 ForEach(0..<9, id: \.self) {
@@ -63,6 +62,17 @@ struct Home: View{
         .onChange(of: moves, perform: {value in
             checkWinner()
         })
+        
+        .alert(isPresented: $gameOver, content: {
+            
+            Alert(title: Text("winner."), message: Text(msg), dismissButton: .destructive(Text("Play Again"), action: {
+                withAnimation(Animation.easeIn(duration: 0.5)) {
+                    moves.removeAll()
+                    moves = Array(repeating: "", count: 9)
+                    isPlaying = true
+                }
+            }))
+        })
     }
     //calc width of grid
     func getWidth() -> CGFloat {
@@ -72,11 +82,11 @@ struct Home: View{
 
 func checkWinner() {
     if checkMoves(player: "X") {
-        msg = "Player X is sussy baka"
+        msg = "Player X wins"
         gameOver.toggle()
     }
     else if checkMoves(player: "O") {
-        msg = "Player O is sussy baka"
+        msg = "Player O wins"
         gameOver.toggle()
     
     }
@@ -89,6 +99,17 @@ func checkMoves(player: String) -> Bool {
         if moves[contestant] == player && moves[contestant+1] == player && moves[contestant+2] == player {
             return true
         }
+    }
+    for contestant in 0...2 {
+        if moves[contestant] == player && moves[contestant+3] == player && moves[contestant+6] == player {
+            return true
+        }
+    }
+    if moves[0] == player && moves [8] == player {
+        return true
+    }
+    if moves [2] == player && moves [4] == player && moves [6] == player{
+        return true
     }
     return false
 }
