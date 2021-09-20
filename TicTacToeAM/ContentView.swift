@@ -65,7 +65,7 @@ struct Home: View{
         
         .alert(isPresented: $gameOver, content: {
             
-            Alert(title: Text("winner."), message: Text(msg), dismissButton: .destructive(Text("Play Again"), action: {
+            Alert(title: Text("Match done!"), message: Text(msg), dismissButton: .destructive(Text("Play Again"), action: {
                 withAnimation(Animation.easeIn(duration: 0.5)) {
                     moves.removeAll()
                     moves = Array(repeating: "", count: 9)
@@ -89,7 +89,17 @@ func checkWinner() {
         msg = "Player O wins"
         gameOver.toggle()
     
-    }
+    } else {
+        
+        let status = moves.contains { (value) -> Bool in
+            return value == ""
+        
+        }
+        if !status {
+            msg = "Game Over Tied!!!"
+            gameOver.toggle()
+        }
+        }
     
 }
 
